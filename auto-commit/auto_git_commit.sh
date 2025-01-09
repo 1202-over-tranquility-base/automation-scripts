@@ -9,11 +9,12 @@ if [[ -z $(git status --porcelain) ]]; then
     exit 0
 fi
 
-# Capture the git diff
+# Capture the git diff and status
 GIT_DIFF=$(git diff)
+GIT_STATUS=$(git status)
 
 # Generate commit message using Python script
-COMMIT_MESSAGE=$(echo "$GIT_DIFF" | python3 "$PYTHON_SCRIPT")
+COMMIT_MESSAGE=$(echo -e "git status:\n $GIT_STATUS\n git diff:\n $GIT_DIFF" | python3 "$PYTHON_SCRIPT")
 
 # Check if commit message was generated
 if [[ -z "$COMMIT_MESSAGE" ]]; then
