@@ -37,7 +37,7 @@ class OpenAIClient:
 def main():
     content = sys.stdin.read()
     client = OpenAIClient()
-    commit_message = client.send_to_llm(content)
+    commit_message = client.send_to_llm("Generate a short `git commit` message for the following `git diff`:\n"+content)
     print(commit_message)
 
 if __name__ == "__main__":
