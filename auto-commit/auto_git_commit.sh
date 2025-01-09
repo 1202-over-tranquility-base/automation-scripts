@@ -28,7 +28,9 @@ echo "-------------------------"
 
 # Prompt user to approve or reject the commit message
 read -p "Do you approve this commit message? (y/n): " APPROVE_MSG
-if [[ "$APPROVE_MSG" != "y" && "$APPROVE_MSG" != "Y" ]]; then
+if [[ -z "$APPROVE_MSG" || "$APPROVE_MSG" == "y" || "$APPROVE_MSG" == "Y" ]]; then
+    echo "Commit message approved."
+else
     echo "Commit aborted by user."
     exit 0
 fi
@@ -42,7 +44,9 @@ git add .
 
 # Allow user to add additional information to the commit message
 read -p "Would you like to add additional information to the commit message? (y/n): " ADD_INFO
-if [[ "$ADD_INFO" == "y" || "$ADD_INFO" == "Y" ]]; then
+if [[ -z "$ADD_INFO" || "$ADD_INFO" == "n" || "$ADD_INFO" == "N" ]]; then
+    echo "No additional information added."
+else
     read -p "Enter additional commit message: " EXTRA_MESSAGE
     COMMIT_MESSAGE="$COMMIT_MESSAGE - $EXTRA_MESSAGE"
 fi
