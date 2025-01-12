@@ -1,4 +1,3 @@
-```markdown
 # Copy File Contents to Clipboard Script
 
 A simple Bash script that copies the contents of specified files to the clipboard in a formatted manner. This script is designed for **Linux** systems, particularly **Fedora**.
@@ -110,4 +109,3 @@ Feel free to open an issue or submit a pull request if you'd like to contribute 
 ## License
 
 This project is licensed under the MIT License.
-```
