@@ -40,27 +40,32 @@ if [ -z "$CLIP_CMD" ]; then
     exit 1
 fi
 
-# Initialize a flag to track if any files are successfully processed
+# Initialize variables
+output=""
 success=false
 
-# Generate the formatted output and pipe it to the clipboard command
-{
-    for file in "$@"; do
-        if [ ! -f "$file" ]; then
-            echo "Warning: File not found or is not a regular file: $file" >&2
-            continue
-        fi
-        echo "---"
-        echo "$file:"
-        echo '```'
-        cat "$file"
-        echo '```'
-        success=true
-    done
-} | $CLIP_CMD
+# Generate the formatted output
+for file in "$@"; do
+    if [ ! -f "$file" ]; then
+        echo "Warning: File not found or is not a regular file: $file" >&2
+        continue
+    fi
+    output+="$file:\n"
+    output+='```\n'
+    file_content=$(cat "$file")
+    # Escape backslashes and backticks to prevent formatting issues
+    file_content=${file_content//\\/\\\\}
+    file_content=${file_content//\`/\\\`}
+    output+="$file_content\n"
+    output+='```\n'
+    output+="---\n"
+    success=true
+done
 
-# Notify the user of the result
+# If at least one file was processed, copy to clipboard
 if $success; then
+    # Use printf to handle the escaped newlines
+    printf -- "$output" | $CLIP_CMD
     echo "File contents have been copied to the clipboard."
 else
     echo "No valid files were processed. Clipboard not updated." >&2
